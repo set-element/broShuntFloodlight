@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Broshuntfloodlight by set-element</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Broshuntfloodlight</h1>
+        <p>active connection shunting based on floodlight openflow </p>
+
+        <p class="view"><a href="https://github.com/set-element/broShuntFloodlight">View the Project on GitHub <small>set-element/broShuntFloodlight</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/set-element/broShuntFloodlight/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/set-element/broShuntFloodlight/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/set-element/broShuntFloodlight">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="broshuntingframework" class="anchor" href="#broshuntingframework" aria-hidden="true"><span class="octicon octicon-link"></span></a>broShuntingFramework</h1>
+
+<p>The shunting framework uses a series of state transitions to define the behavior.  The various tranition states are:</p>
+
+<p>CutoffTime : Connections are analyzed for an observation period.  When that period expires 
+      without adequate data being moved, then the session object is set to 'CutoffTime' and 
+      the state removed.</p>
+
+<p>FlowTrackInit : A "FlowTrack" in this case is a pair of address' .  When a unique pair of 
+      addresses is identified, the session state is set to FlowTrackInit to identify this.</p>
+
+<p>FlowTrackRemove : Like the Init above, when the last connection associated with an address 
+      pair is closed, then the FlowTrack table entry is removed as well.</p>
+
+<p>RemoveConnection : If a connection no longer exists after the test_connection() function is 
+      called, the state is set to RemoveConnection and the data is cleared via clear_shunt(c).</p>
+
+<p>ShuntClear : Something like the initial garbage collection call, this state signifies the start
+      of the closing sequence called by flow_tracker_remove(c) .  </p>
+
+<p>ShuntFlowInit : When a connection is first seen at the connection_established event, the state is set
+      to ShuntFlowInit and basic values are defined for the additonal connection structure.</p>
+
+<p>ShuntFlowIPIgnore : When flow_tracker_add(c) &gt;= shunt_track_high_water the state is set to this to
+      identify that the connection is being shunted via the more complete IP &lt;-&gt; IP filter.</p>
+
+<p>ShuntTrackerHighWater :  When ++shunt_tracker[oA,rA] == shunt_track_high_water and <em>this connection</em> pushes the 
+      FlowTrack monitor over the threshold, then it's state will be set to ShuntTrackerHighWater.</p>
+
+<p>ShuntTrackerIncrement : This connection has incremented the pre-existing FlowTrack value. </p>
+
+<p>ShuntTrackerLWater :  Likewise when --shunt_tracker[oA,rA] == shunt_track_low_water, this will get a connection
+      state set to ShuntTrackerLWater.</p>
+
+<p>ShuntTrigger : A connection has exceeded the data volume requirements for shunting.</p>
+
+<p>TestConnection : This is more of a place holder in that the connection is still in testing.  There is 
+      no reason for this to show up in the logs since it is consitered "normal".</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/set-element">set-element</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
